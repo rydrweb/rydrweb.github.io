@@ -1,0 +1,151 @@
+/* Reset basic styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+    width: 100%;
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden; /* Ensure no scrollbars */
+    background-color: #222; /* Set a background color for the body */
+}
+
+/* Container for the clock and buttons */
+.container {
+    text-align: center;
+    color: white;
+    position: relative;
+}
+
+/* Styling for the clock container with a transparent black background */
+.clock-container {
+    background-color: rgba(0, 0, 0, 0.7); /* semi-transparent black */
+    padding: 20px 40px; /* Add padding for spacing around the clock */
+    border-radius: 10px; /* Rounded corners */
+    display: inline-block;
+}
+
+/* Styling for the clock */
+.clock {
+    font-size: 3rem;
+    font-weight: bold;
+}
+
+/* Button styles */
+.btn {
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 15px 30px;
+    margin: 10px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 1.1rem;
+    display: inline-block;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* Button hover effects */
+.btn:hover {
+    background-color: rgba(0, 0, 0, 0.5);
+    transform: scale(1.1);
+}
+
+/* Add animation to links */
+.links {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Settings button in the bottom-right corner */
+.settings-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 15px;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    cursor: pointer;
+    z-index: 10;
+}
+
+/* Settings menu (hidden by default) */
+.settings-menu {
+    display: none;
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 20px;
+    border-radius: 8px;
+    color: white;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+/* Color option buttons */
+.color-options {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.color-btn {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: none;
+}
+
+/* Wave animation background */
+body {
+    position: relative;
+    overflow: hidden;
+}
+
+/* Background with wave animation */
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, lightblue, gray); /* Front of the wave (light blue) and back (gray) */
+    background-size: 200% 100%;
+    animation: waveAnimation 6s ease-in-out infinite;
+    z-index: -1;
+}
+
+/* Keyframes for the wave effect */
+@keyframes waveAnimation {
+    0% {
+        background-position: 0% 0%;
+    }
+    50% {
+        background-position: 100% 0%;
+    }
+    100% {
+        background-position: 0% 0%;
+    }
+}
+
+/* Responsive design for smaller screens */
+@media (max-width: 600px) {
+    .clock {
+        font-size: 2rem;
+    }
+
+    .btn {
+        font-size: 1rem;
+        padding: 12px 25px;
+    }
+}
