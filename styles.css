@@ -93,17 +93,17 @@ html, body {
 }
 
 .btny:hover {
-    background-color: red;
+    background-color: #e74c3c;
     transform: scale(1.1);
 }
 
 .btng:hover {
-    background-color: green;
+    background-color: #f1c40f;
     transform: scale(1.1);
 }
 
 .btnd:hover {
-    background-color: purple);
+    background-color: #8e44ad;
     transform: scale(1.1);
 }
 
