@@ -213,13 +213,13 @@ body::before {
   background: #121212; /* Fallback for browsers that don't support gradients */
   background: linear-gradient(
     135deg,
-    #121212 25%,
-    #1a1a1a 25%,
-    #1a1a1a 50%,
-    #121212 50%,
-    #121212 75%,
-    #1a1a1a 75%,
-    #1a1a1a
+    #48c9b0 25%,
+    #45b39d 25%,
+    #45b39d 50%,
+    #48c9b0 50%,
+    #48c9b0 75%,
+    #45b39d 75%,
+    #45b39d
   );
   background-size: 40px 40px;
 
