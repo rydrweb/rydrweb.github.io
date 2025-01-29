@@ -13,7 +13,7 @@ html, body {
     justify-content: center;
     align-items: center;
     overflow: hidden; /* Ensure no scrollbars */
-    background-color: #b2babb; 
+    background-color: #7b7d7d; 
 }
 
 /* Container for the clock and buttons */
