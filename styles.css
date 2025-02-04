@@ -48,7 +48,7 @@ html, body {
     transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-.btm {
+.btnm {
     background-color: rgba(0, 0, 0, 0.7);
     color: white;
     padding: 15px 30px;
