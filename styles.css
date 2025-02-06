@@ -5,36 +5,15 @@ html, body {
   width: 100%;
   height: 100%;
   display: flex;
-}
-
-/* Main container that holds both left and right sides */
-.main-container {
-  display: flex;
-  width: 100%;
-  height: 100%;
-}
-
-/* Left side with animation */
-.left-side {
-  flex: 1;
-  display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #414141;
-  height: 100%; /* Ensures the left side takes up full height */
-}
-
-/* Right side with clock and buttons */
-.right-side {
-  flex: 1;
-  padding: 20px;
   background-color: #333;
-  color: #fff;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100%; /* Ensures the right side takes up full height */
+}
+
+/* Main container that holds both clock and buttons */
+.main-container {
+  text-align: center;
+  color: white;
 }
 
 /* Clock styles */
@@ -42,17 +21,18 @@ html, body {
   font-size: 3rem;
   margin-bottom: 20px;
   font-weight: bold;
-  text-align: center;
 }
 
-/* Button styles */
+/* Button container styles */
 .button-container {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  align-items: center;
 }
 
-button {
+/* Button styles */
+.button {
   background-color: #d3a410;
   padding: 10px;
   width: 150px;
@@ -62,90 +42,6 @@ button {
   cursor: pointer;
 }
 
-button:hover {
+.button:hover {
   background-color: #b7870f;
-}
-
-/* Keyframe Animations for SVG */
-@keyframes bounce {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(10px);
-  }
-}
-
-@keyframes bounce2 {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(20px);
-  }
-}
-
-@keyframes umbral {
-  0% {
-    stop-color: #d3a5102e;
-  }
-  50% {
-    stop-color: rgba(211, 165, 16, 0.519);
-  }
-  100% {
-    stop-color: #d3a5102e;
-  }
-}
-
-@keyframes particles1 {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(10px);
-  }
-}
-
-@keyframes particles2 {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(15px);
-  }
-}
-
-@keyframes particles3 {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(5px);
-  }
-}
-
-/* Apply animations to your SVG elements */
-#bounce {
-  animation: bounce 4s ease-in-out infinite;
-}
-
-#bounce2 {
-  animation: bounce2 4s ease-in-out infinite;
-  animation-delay: 0.5s;
-}
-
-#particles1 {
-  animation: particles1 4s ease-in-out infinite;
-}
-
-#particles2 {
-  animation: particles2 4s ease-in-out infinite;
-}
-
-#particles3 {
-  animation: particles3 4s ease-in-out infinite;
-}
-
-#animatedStop {
-  animation: umbral 4s infinite;
 }
