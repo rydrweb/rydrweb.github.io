@@ -97,12 +97,30 @@ button:hover {
   }
 }
 
-@keyframes particles {
+@keyframes particles1 {
   0%, 100% {
     transform: translateY(0);
   }
   50% {
     transform: translateY(10px);
+  }
+}
+
+@keyframes particles2 {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(15px);
+  }
+}
+
+@keyframes particles3 {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(5px);
   }
 }
 
@@ -116,8 +134,16 @@ button:hover {
   animation-delay: 0.5s;
 }
 
-#particles {
-  animation: particles 4s ease-in-out infinite;
+#particles1 {
+  animation: particles1 4s ease-in-out infinite;
+}
+
+#particles2 {
+  animation: particles2 4s ease-in-out infinite;
+}
+
+#particles3 {
+  animation: particles3 4s ease-in-out infinite;
 }
 
 #animatedStop {
