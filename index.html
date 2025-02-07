@@ -15,6 +15,7 @@
             height: 100vh;
             background: linear-gradient(135deg, #a8edea, #fed6e3);
             font-family: Arial, sans-serif;
+            transition: background 0.5s ease;
         }
         .container {
             text-align: center;
@@ -24,6 +25,7 @@
             padding: 20px;
             border-radius: 15px;
             backdrop-filter: blur(10px);
+            transition: transform 0.3s ease;
         }
         .clock {
             font-size: 3rem;
@@ -62,6 +64,23 @@
         .settings-btn:hover {
             background: rgba(255, 255, 255, 0.5);
         }
+        .popup {
+            display: none;
+            position: fixed;
+            bottom: 70px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+        .popup label {
+            display: block;
+            margin-top: 10px;
+        }
+        .popup input {
+            width: 100%;
+        }
     </style>
 </head>
 <body>
@@ -76,6 +95,44 @@
         </div>
     </div>
     <button id="settings-btn" class="settings-btn">⚙️</button>
-    <script src="script.js"></script>
+    <div id="popup" class="popup">
+        <label for="size-slider">Clock & Button Size:</label>
+        <input type="range" id="size-slider" min="1" max="3" step="0.1" value="1">
+        <label for="theme-toggle">Day/Night Mode:</label>
+        <input type="checkbox" id="theme-toggle">
+    </div>
+    <script>
+        const clock = document.getElementById("clock");
+        const sizeSlider = document.getElementById("size-slider");
+        const themeToggle = document.getElementById("theme-toggle");
+        const settingsBtn = document.getElementById("settings-btn");
+        const popup = document.getElementById("popup");
+
+        function updateClock() {
+            const now = new Date();
+            clock.textContent = now.toLocaleTimeString();
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        settingsBtn.addEventListener("click", () => {
+            popup.style.display = popup.style.display === "block" ? "none" : "block";
+        });
+
+        sizeSlider.addEventListener("input", () => {
+            document.querySelector(".clock").style.fontSize = `${sizeSlider.value * 3}rem`;
+            document.querySelectorAll(".btn").forEach(btn => {
+                btn.style.padding = `${sizeSlider.value * 10}px ${sizeSlider.value * 20}px`;
+            });
+        });
+
+        themeToggle.addEventListener("change", () => {
+            if (themeToggle.checked) {
+                document.body.style.background = "linear-gradient(135deg, #1e3c72, #2a5298)";
+            } else {
+                document.body.style.background = "linear-gradient(135deg, #a8edea, #fed6e3)";
+            }
+        });
+    </script>
 </body>
 </html>
