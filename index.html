@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>rydrweb</title>
+    <title>rydrweb v1.0</title>
     <link rel="stylesheet" href="styles.css">
     <style>
         body {
@@ -98,6 +98,10 @@
     <div id="popup" class="popup">
         <label for="size-slider">Clock & Button Size:</label>
         <input type="range" id="size-slider" min="1" max="3" step="0.1" value="1">
+        <label for="color1-picker">Gradient Color 1:</label>
+        <input type="color" id="color1-picker" value="#a8edea">
+        <label for="color2-picker">Gradient Color 2:</label>
+        <input type="color" id="color2-picker" value="#fed6e3">
         <label for="theme-toggle">Day/Night Mode:</label>
         <input type="checkbox" id="theme-toggle">
     </div>
@@ -105,6 +109,8 @@
         const clock = document.getElementById("clock");
         const sizeSlider = document.getElementById("size-slider");
         const themeToggle = document.getElementById("theme-toggle");
+        const color1Picker = document.getElementById("color1-picker");
+        const color2Picker = document.getElementById("color2-picker");
         const settingsBtn = document.getElementById("settings-btn");
         const popup = document.getElementById("popup");
 
@@ -126,13 +132,17 @@
             });
         });
 
-        themeToggle.addEventListener("change", () => {
+        function updateBackground() {
             if (themeToggle.checked) {
-                document.body.style.background = "linear-gradient(135deg, #37177c, #9274d4)";
+                document.body.style.background = "linear-gradient(135deg, #1e3c72, #2a5298)";
             } else {
-                document.body.style.background = "linear-gradient(135deg, #a8edea, #fed6e3)";
+                document.body.style.background = `linear-gradient(135deg, ${color1Picker.value}, ${color2Picker.value})`;
             }
-        });
+        }
+
+        themeToggle.addEventListener("change", updateBackground);
+        color1Picker.addEventListener("input", updateBackground);
+        color2Picker.addEventListener("input", updateBackground);
     </script>
 </body>
 </html>
