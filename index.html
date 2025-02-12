@@ -92,6 +92,7 @@
             <a href="https://mail.google.com" class="btn" target="_blank">Gmail</a>
             <a href="https://drive.google.com" class="btn" target="_blank">Google Drive</a>
             <a href="https://youtube.com" class="btn" target="_blank">YouTube</a>
+            <button id="goToRydrGames">rydrgames</button>
         </div>
     </div>
     <button id="settings-btn" class="settings-btn">⚙️</button>
@@ -106,6 +107,11 @@
         <input type="checkbox" id="theme-toggle">
     </div>
     <script>
+
+        document.getElementById('goToRydrGames').addEventListener('click', function() {
+            window.location.href = "rydrogames.html"; // This takes the user to rydrogames.html
+        });
+        
         const clock = document.getElementById("clock");
         const sizeSlider = document.getElementById("size-slider");
         const themeToggle = document.getElementById("theme-toggle");
