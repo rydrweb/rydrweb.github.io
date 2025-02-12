@@ -1,1 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RydrGames - Emulator Hub</title>
+    <link rel="stylesheet" href="style.css"> <!-- Add your custom CSS here -->
+</head>
+<body>
+    <div id="rydrogamesContainer">
+        <header>
+            <h1>RydrGames - Play Emulated Games</h1>
+            <button id="goBack">Back to Home</button>
+        </header>
+
+        <section id="gamesList">
+            <!-- Game 1 Example -->
+            <div class="game">
+                <h2>Game 1</h2>
+                <!-- Replace with actual embed code or game iframe from mocvg.github.io -->
+                <iframe src="https://mocvg.github.io/game1" width="600" height="400"></iframe>
+            </div>
+
+            <!-- Game 2 Example -->
+            <div class="game">
+                <h2>Game 2</h2>
+                <!-- Replace with actual embed code or game iframe from mocvg.github.io -->
+                <iframe src="https://mocvg.github.io/game2" width="600" height="400"></iframe>
+            </div>
+
+            <!-- Add more games as needed, replacing the game URLs and titles -->
+            <!-- Ensure that you change all mentions of "mocvg" to "rydrogames" -->
+        </section>
+    </div>
+
+    <script>
+        // Button functionality to return to the homepage
+        document.getElementById('goBack').addEventListener('click', function() {
+            window.location.href = "index.html"; // Takes user back to index.html
+        });
+    </script>
+</body>
+</html>
 
