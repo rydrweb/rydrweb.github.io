@@ -44,10 +44,20 @@
             text-decoration: none;
             color: #333;
             font-weight: bold;
-            transition: 0.3s;
+            transition: background 0.3s, color 0.3s;
         }
         .btn:hover {
             background: rgba(255, 255, 255, 0.5);
+        }
+        /* Specific hover colors for each button */
+        .btn.gmail:hover {
+            color: green;
+        }
+        .btn.youtube:hover {
+            color: red;
+        }
+        .btn.drive:hover {
+            color: purple;
         }
         .settings-btn {
             position: fixed;
@@ -81,25 +91,6 @@
         .popup input {
             width: 100%;
         }
-        /* New styles for the city background */
-        .city-background {
-            background: url('path-to-your-lofi-city-image.jpg') center/cover no-repeat fixed;
-        }
-        .toggle-bg-btn {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 10px 20px;
-            background: rgba(255, 255, 255, 0.3);
-            border: none;
-            border-radius: 10px;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-        .toggle-bg-btn:hover {
-            background: rgba(255, 255, 255, 0.5);
-        }
     </style>
 </head>
 <body>
@@ -108,9 +99,9 @@
             <div id="clock" class="clock"></div>
         </div>
         <div class="buttons">
-            <a href="https://mail.google.com" class="btn" target="_blank">Gmail</a>
-            <a href="https://drive.google.com" class="btn" target="_blank">Google Drive</a>
-            <a href="https://youtube.com" class="btn" target="_blank">YouTube</a>
+            <a href="https://mail.google.com" class="btn gmail" target="_blank">Gmail</a>
+            <a href="https://drive.google.com" class="btn drive" target="_blank">Google Drive</a>
+            <a href="https://youtube.com" class="btn youtube" target="_blank">YouTube</a>
         </div>
     </div>
     <button id="settings-btn" class="settings-btn">⚙️</button>
@@ -124,8 +115,6 @@
         <label for="theme-toggle">Day/Night Mode:</label>
         <input type="checkbox" id="theme-toggle">
     </div>
-    <!-- New button to toggle the city background -->
-    <button id="toggle-bg-btn" class="toggle-bg-btn">Toggle City Background</button>
     <script>
         const clock = document.getElementById("clock");
         const sizeSlider = document.getElementById("size-slider");
@@ -134,7 +123,6 @@
         const color2Picker = document.getElementById("color2-picker");
         const settingsBtn = document.getElementById("settings-btn");
         const popup = document.getElementById("popup");
-        const toggleBgBtn = document.getElementById("toggle-bg-btn");
 
         function updateClock() {
             const now = new Date();
@@ -158,10 +146,14 @@
             if (themeToggle.checked) {
                 document.body.style.background = "linear-gradient(135deg, #1e3c72, #2a5298)";
             } else {
-                document.body.style.background = `
-::contentReference[oaicite:0]{index=0}
- 
-</script>
+                document.body.style.background = `linear-gradient(135deg, ${color1Picker.value}, ${color2Picker.value})`;
+            }
+        }
+
+        themeToggle.addEventListener("change", updateBackground);
+        color1Picker.addEventListener("input", updateBackground);
+        color2Picker.addEventListener("input", updateBackground);
+    </script>
 </body>
 </html>
- 
+
