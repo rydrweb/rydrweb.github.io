@@ -13,12 +13,17 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background: linear-gradient(135deg, #a8edea, #fed6e3);
+            background: url('path-to-your-image.jpg') center/cover no-repeat fixed;
             font-family: Arial, sans-serif;
             transition: background 0.5s ease;
+            /* Default colors */
+            --primary-color: #000000; /* Black */
+            --secondary-color: #0000FF; /* Blue */
+            --accent-color: #800080; /* Purple */
         }
         .container {
             text-align: center;
+            color: var(--primary-color);
         }
         .clock-container {
             background: rgba(255, 255, 255, 0.2);
@@ -30,7 +35,7 @@
         .clock {
             font-size: 3rem;
             font-weight: bold;
-            color: #333;
+            color: var(--secondary-color);
         }
         .buttons {
             margin-top: 20px;
@@ -42,7 +47,7 @@
             background: rgba(255, 255, 255, 0.3);
             border-radius: 10px;
             text-decoration: none;
-            color: #333;
+            color: var(--accent-color);
             font-weight: bold;
             transition: 0.3s;
         }
@@ -96,23 +101,18 @@
     </div>
     <button id="settings-btn" class="settings-btn">⚙️</button>
     <div id="popup" class="popup">
-        <label for="size-slider">Clock & Button Size:</label>
-        <input type="range" id="size-slider" min="1" max="3" step="0.1" value="1">
-        <label for="color1-picker">Gradient Color 1:</label>
-        <input type="color" id="color1-picker" value="#a8edea">
-        <label for="color2-picker">Gradient Color 2:</label>
-        <input type="color" id="color2-picker" value="#fed6e3">
-        <label for="theme-toggle">Day/Night Mode:</label>
-        <input type="checkbox" id="theme-toggle">
+        <label for="primaryColor">Primary Color:</label>
+        <input type="color" id="primaryColor" name="primaryColor" value="#000000">
+        <label for="secondaryColor">Secondary Color:</label>
+        <input type="color" id="secondaryColor" name="secondaryColor" value="#0000FF">
+        <label for="accentColor">Accent Color:</label>
+        <input type="color" id="accentColor" name="accentColor" value="#800080">
     </div>
     <script>
         const clock = document.getElementById("clock");
-        const sizeSlider = document.getElementById("size-slider");
-        const themeToggle = document.getElementById("theme-toggle");
-        const color1Picker = document.getElementById("color1-picker");
-        const color2Picker = document.getElementById("color2-picker");
         const settingsBtn = document.getElementById("settings-btn");
         const popup = document.getElementById("popup");
+        const root = document.documentElement;
 
         function updateClock() {
             const now = new Date();
@@ -125,24 +125,17 @@
             popup.style.display = popup.style.display === "block" ? "none" : "block";
         });
 
-        sizeSlider.addEventListener("input", () => {
-            document.querySelector(".clock").style.fontSize = `${sizeSlider.value * 3}rem`;
-            document.querySelectorAll(".btn").forEach(btn => {
-                btn.style.padding = `${sizeSlider.value * 10}px ${sizeSlider.value * 20}px`;
-            });
+        document.getElementById('primaryColor').addEventListener('input', function() {
+            root.style.setProperty('--primary-color', this.value);
         });
 
-        function updateBackground() {
-            if (themeToggle.checked) {
-                document.body.style.background = "linear-gradient(135deg, #1e3c72, #2a5298)";
-            } else {
-                document.body.style.background = `linear-gradient(135deg, ${color1Picker.value}, ${color2Picker.value})`;
-            }
-        }
+        document.getElementById('secondaryColor').addEventListener('input', function() {
+            root.style.setProperty('--secondary-color', this.value);
+        });
 
-        themeToggle.addEventListener("change", updateBackground);
-        color1Picker.addEventListener("input", updateBackground);
-        color2Picker.addEventListener("input", updateBackground);
+        document.getElementById('accentColor').addEventListener('input', function() {
+            root.style.setProperty('--accent-color', this.value);
+        });
     </script>
 </body>
 </html>
