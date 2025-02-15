@@ -13,17 +13,12 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background: url('path-to-your-image.jpg') center/cover no-repeat fixed;
+            background: linear-gradient(135deg, #a8edea, #fed6e3);
             font-family: Arial, sans-serif;
             transition: background 0.5s ease;
-            /* Default colors */
-            --primary-color: #000000; /* Black */
-            --secondary-color: #0000FF; /* Blue */
-            --accent-color: #800080; /* Purple */
         }
         .container {
             text-align: center;
-            color: var(--primary-color);
         }
         .clock-container {
             background: rgba(255, 255, 255, 0.2);
@@ -35,7 +30,7 @@
         .clock {
             font-size: 3rem;
             font-weight: bold;
-            color: var(--secondary-color);
+            color: #333;
         }
         .buttons {
             margin-top: 20px;
@@ -47,7 +42,7 @@
             background: rgba(255, 255, 255, 0.3);
             border-radius: 10px;
             text-decoration: none;
-            color: var(--accent-color);
+            color: #333;
             font-weight: bold;
             transition: 0.3s;
         }
@@ -86,6 +81,25 @@
         .popup input {
             width: 100%;
         }
+        /* New styles for the city background */
+        .city-background {
+            background: url('path-to-your-lofi-city-image.jpg') center/cover no-repeat fixed;
+        }
+        .toggle-bg-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.3);
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .toggle-bg-btn:hover {
+            background: rgba(255, 255, 255, 0.5);
+        }
     </style>
 </head>
 <body>
@@ -101,18 +115,26 @@
     </div>
     <button id="settings-btn" class="settings-btn">⚙️</button>
     <div id="popup" class="popup">
-        <label for="primaryColor">Primary Color:</label>
-        <input type="color" id="primaryColor" name="primaryColor" value="#000000">
-        <label for="secondaryColor">Secondary Color:</label>
-        <input type="color" id="secondaryColor" name="secondaryColor" value="#0000FF">
-        <label for="accentColor">Accent Color:</label>
-        <input type="color" id="accentColor" name="accentColor" value="#800080">
+        <label for="size-slider">Clock & Button Size:</label>
+        <input type="range" id="size-slider" min="1" max="3" step="0.1" value="1">
+        <label for="color1-picker">Gradient Color 1:</label>
+        <input type="color" id="color1-picker" value="#a8edea">
+        <label for="color2-picker">Gradient Color 2:</label>
+        <input type="color" id="color2-picker" value="#fed6e3">
+        <label for="theme-toggle">Day/Night Mode:</label>
+        <input type="checkbox" id="theme-toggle">
     </div>
+    <!-- New button to toggle the city background -->
+    <button id="toggle-bg-btn" class="toggle-bg-btn">Toggle City Background</button>
     <script>
         const clock = document.getElementById("clock");
+        const sizeSlider = document.getElementById("size-slider");
+        const themeToggle = document.getElementById("theme-toggle");
+        const color1Picker = document.getElementById("color1-picker");
+        const color2Picker = document.getElementById("color2-picker");
         const settingsBtn = document.getElementById("settings-btn");
         const popup = document.getElementById("popup");
-        const root = document.documentElement;
+        const toggleBgBtn = document.getElementById("toggle-bg-btn");
 
         function updateClock() {
             const now = new Date();
@@ -125,17 +147,17 @@
             popup.style.display = popup.style.display === "block" ? "none" : "block";
         });
 
-        document.getElementById('primaryColor').addEventListener('input', function() {
-            root.style.setProperty('--primary-color', this.value);
+        sizeSlider.addEventListener("input", () => {
+            document.querySelector(".clock").style.fontSize = `${sizeSlider.value * 3}rem`;
+            document.querySelectorAll(".btn").forEach(btn => {
+                btn.style.padding = `${sizeSlider.value * 10}px ${sizeSlider.value * 20}px`;
+            });
         });
 
-        document.getElementById('secondaryColor').addEventListener('input', function() {
-            root.style.setProperty('--secondary-color', this.value);
-        });
-
-        document.getElementById('accentColor').addEventListener('input', function() {
-            root.style.setProperty('--accent-color', this.value);
-        });
-    </script>
-</body>
-</html>
+        function updateBackground() {
+            if (themeToggle.checked) {
+                document.body.style.background = "linear-gradient(135deg, #1e3c72, #2a5298)";
+            } else {
+                document
+::contentReference[oaicite:0]{index=0}
+ 
