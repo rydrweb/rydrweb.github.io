@@ -4,137 +4,77 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>rydrweb v1.2</title>
-    <link rel="icon" sizes="32x32" href="favicon-32x32.png">
     <style>
         body {
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background: linear-gradient(135deg, #a8edea, #fed6e3);
             font-family: Arial, sans-serif;
-            transition: background 0.5s ease;
-        }
-        .container {
             text-align: center;
+            background: linear-gradient(135deg, #a8edea, #fed6e3);
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.5s;
         }
-        .clock-container {
-            background: rgba(255, 255, 255, 0.2);
-            padding: 20px;
-            border-radius: 15px;
-            backdrop-filter: blur(10px);
-            transition: transform 0.3s ease;
-        }
-        .clock {
-            font-size: 3rem;
+        #clock {
+            font-size: 50px;
             font-weight: bold;
-            color: #333;
+            transition: font-size 0.3s ease;
         }
-        .buttons {
-            margin-top: 20px;
-        }
-        .btn {
-            display: inline-block;
-            margin: 10px;
-            padding: 10px 20px;
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 10px;
-            text-decoration: none;
-            color: #333;
-            font-weight: bold;
-            transition: background 0.3s, color 0.3s;
-        }
-        .btn:hover {
-            color: white;
-        }
-        .btn.gmail:hover {
-            background-color: green;
-        }
-        .btn.youtube:hover {
-            background-color: red;
-        }
-        .btn.drive:hover {
-            background-color: purple;
-        }
-        .settings-btn {
+        #settings-btn {
             position: fixed;
-            bottom: 20px;
-            right: 20px;
-            padding: 10px;
-            background: rgba(255, 255, 255, 0.3);
+            top: 10px;
+            right: 10px;
+            background: #fff;
             border: none;
-            border-radius: 10px;
-            font-size: 1.5rem;
+            padding: 10px 20px;
+            font-size: 16px;
             cursor: pointer;
-            transition: 0.3s;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
         }
-        .settings-btn:hover {
-            background: rgba(255, 255, 255, 0.5);
-        }
-        .settings-menu {
+        #settings-menu {
             display: none;
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(10px);
-            z-index: 1000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        .settings-content {
-            background: white;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 255, 255, 0.9);
             padding: 20px;
             border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-            max-width: 90%;
-            max-height: 90%;
-            overflow-y: auto;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            z-index: 100;
+        }
+        .blur {
+            filter: blur(5px);
         }
         .color-option {
+            width: 40px;
+            height: 40px;
             display: inline-block;
-            width: 50px;
-            height: 50px;
             margin: 5px;
+            border-radius: 50%;
             cursor: pointer;
-            border: 2px solid transparent;
-            border-radius: 5px;
-        }
-        .color-option.selected {
-            border-color: #000;
+            border: 2px solid white;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="clock-container">
-            <div id="clock" class="clock"></div>
-        </div>
-        <div class="buttons">
-            <p>
-                <a href="https://mail.google.com" class="btn gmail" target="_blank">Gmail</a>
-                <a href="https://drive.google.com" class="btn drive" target="_blank">Google Drive</a>
-                <a href="https://youtube.com" class="btn youtube" target="_blank">YouTube</a>
-            </p>
-        </div>
+
+    <div id="clock">00:00:00</div>
+
+    <button id="settings-btn">Settings</button>
+
+    <div id="settings-menu">
+        <h3>Settings</h3>
+        <label>Clock Size:</label>
+        <input type="range" id="size-slider" min="20" max="100" value="50">
+        <h4>Theme:</h4>
+        <div id="color-options"></div>
+        <button id="close-settings">Close</button>
     </div>
-    <button id="settings-btn" class="settings-btn">⚙️</button>
-    <div id="settings-menu" class="settings-menu">
-        <div class="settings-content">
-            <h2>Settings</h2>
-            <label for="size-slider">Clock & Button Size:</label>
-            <input type="range" id="size-slider" min="1" max="3" step="0.1" value="1">
-            <h3>Color Themes</h3>
-            <div id="color-options">
-            </div>
-            <button id="close-settings">Close</button>
-        </div>
-    </div>
+
     <script>
         const clock = document.getElementById("clock");
         const sizeSlider = document.getElementById("size-slider");
@@ -151,11 +91,17 @@
         updateClock();
 
         settingsBtn.addEventListener("click", () => {
-            settingsMenu.style.display = "flex";
+            settingsMenu.style.display = "block";
+            document.body.classList.add("blur");
         });
 
         closeSettings.addEventListener("click", () => {
             settingsMenu.style.display = "none";
+            document.body.classList.remove("blur");
+        });
+
+        sizeSlider.addEventListener("input", () => {
+            clock.style.fontSize = `${sizeSlider.value}px`;
         });
 
         const colorThemes = [
@@ -174,6 +120,7 @@
             colorOptionsContainer.appendChild(div);
         });
 
+        // Apply theme
         function applyTheme(index) {
             const theme = colorThemes[index];
             document.body.style.background = `linear-gradient(135deg, ${theme.colors[0]}, ${theme.colors[1]})`;
@@ -187,5 +134,3 @@
     </script>
 </body>
 </html>
-
- 
