@@ -178,8 +178,6 @@
         <input type="color" id="color2-picker" value="#fed6e3">
         <label for="theme-toggle">Day/Night Mode:</label>
         <input type="checkbox" id="theme-toggle">
-        <label for="pinkgreen"> -- COMBOS -- </label>
-        <input type="checkbox" id="pinkgreen">
     </div>
     <script>
         const clock = document.getElementById("clock");
@@ -211,9 +209,6 @@
         function updateBackground() {
             if (themeToggle.checked) {
                 document.body.style.background = "linear-gradient(135deg, #1e3c72, #2a5298)";
-            }
-            if (pinkgreen.checked) {
-                document.body.style.background = "linear-gradient(135deg, #eeaae5, #e8ffd3)";
             } else {
                 document.body.style.background = `linear-gradient(135deg, ${color1Picker.value}, ${color2Picker.value})`;
             }
