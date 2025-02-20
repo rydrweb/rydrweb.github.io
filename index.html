@@ -3,134 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>rydrweb v1.2</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            background: linear-gradient(135deg, #a8edea, #fed6e3);
-            margin: 0;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            transition: background 0.5s;
-        }
-        #clock {
-            font-size: 50px;
-            font-weight: bold;
-            transition: font-size 0.3s ease;
-        }
-        #settings-btn {
-            position: fixed;
-            top: 10px;
-            right: 10px;
-            background: #fff;
-            border: none;
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-        }
-        #settings-menu {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(255, 255, 255, 0.9);
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            z-index: 100;
-        }
-        .blur {
-            filter: blur(5px);
-        }
-        .color-option {
-            width: 40px;
-            height: 40px;
-            display: inline-block;
-            margin: 5px;
-            border-radius: 50%;
-            cursor: pointer;
-            border: 2px solid white;
-        }
-    </style>
+    <title>rydrweb v1.1</title>
+    <link rel="icon" sizes="32x32" href="favicon-32x32.png">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-
-    <div id="clock">00:00:00</div>
-
-    <button id="settings-btn">Settings</button>
-
-    <div id="settings-menu">
-        <h3>Settings</h3>
-        <label>Clock Size:</label>
-        <input type="range" id="size-slider" min="20" max="100" value="50">
-        <h4>Theme:</h4>
-        <div id="color-options"></div>
-        <button id="close-settings">Close</button>
+    <div class="container">
+        <div class="clock-container">
+            <div id="clock" class="clock"></div>
+        </div>
+        <div class="buttons">
+            <p>
+            <a href="https://mail.google.com" class="btn gmail" target="_blank">Gmail</a>
+            <a href="https://drive.google.com" class="btn drive" target="_blank">Google Drive</a>
+            <a href="https://youtube.com" class="btn youtube" target="_blank">YouTube</a>
+        </p>
+        </div>
     </div>
-
-    <script>
-        const clock = document.getElementById("clock");
-        const sizeSlider = document.getElementById("size-slider");
-        const settingsBtn = document.getElementById("settings-btn");
-        const settingsMenu = document.getElementById("settings-menu");
-        const closeSettings = document.getElementById("close-settings");
-        const colorOptionsContainer = document.getElementById("color-options");
-
-        function updateClock() {
-            const now = new Date();
-            clock.textContent = now.toLocaleTimeString();
-        }
-        setInterval(updateClock, 1000);
-        updateClock();
-
-        settingsBtn.addEventListener("click", () => {
-            settingsMenu.style.display = "block";
-            document.body.classList.add("blur");
-        });
-
-        closeSettings.addEventListener("click", () => {
-            settingsMenu.style.display = "none";
-            document.body.classList.remove("blur");
-        });
-
-        sizeSlider.addEventListener("input", () => {
-            clock.style.fontSize = `${sizeSlider.value}px`;
-        });
-
-        const colorThemes = [
-            { name: "Ocean Blue", colors: ["#a8edea", "#fed6e3"] },
-            { name: "Sunset Glow", colors: ["#ff9a9e", "#fad0c4"] },
-            { name: "Forest Green", colors: ["#a1c4fd", "#c2e9fb"] },
-            { name: "Cyber Purple", colors: ["#ff9a9e", "#fc6076"] },
-            { name: "Neon Night", colors: ["#12c2e9", "#c471ed"] }
-        ];
-
-        colorThemes.forEach((theme, index) => {
-            const div = document.createElement("div");
-            div.classList.add("color-option");
-            div.style.background = `linear-gradient(135deg, ${theme.colors[0]}, ${theme.colors[1]})`;
-            div.addEventListener("click", () => applyTheme(index));
-            colorOptionsContainer.appendChild(div);
-        });
-
-        // Apply theme
-        function applyTheme(index) {
-            const theme = colorThemes[index];
-            document.body.style.background = `linear-gradient(135deg, ${theme.colors[0]}, ${theme.colors[1]})`;
-            localStorage.setItem("selectedTheme", index);
-        }
-
-        const savedTheme = localStorage.getItem("selectedTheme");
-        if (savedTheme !== null) {
-            applyTheme(parseInt(savedTheme));
-        }
-    </script>
+    <a href="https://github.com/rydrweb/rydrweb.github.io/"><button class="gBtn">
+        <span class="svgContainer">
+           <svg fill="white" viewBox="0 0 496 512" height="1.6em"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"></path></svg>
+        </span>
+        <span class="BG"></span>
+    </button></a>
+    <button id="settings-btn" class="settings-btn">⚙️</button>
+    <div id="popup" class="popup">
+        <label for="size-slider">Clock & Button Size:</label>
+        <input type="range" id="size-slider" min="1" max="3" step="0.1" value="1">
+        <div>
+            <label>Color Combos:</label>
+            <div class="color-box" id="color1" style="background: linear-gradient(45deg, #a8edea, #fed6e3);"></div>
+            <div class="color-box" id="color2" style="background: linear-gradient(45deg, #a9c9ff, #ffbbec);"></div>
+            <div class="color-box" id="color3" style="background: linear-gradient(45deg, #fbc2eb, #a6c1ee);"></div>
+        </div>
+    </div>
+    <script src="scripts.js"></script>
 </body>
 </html>
