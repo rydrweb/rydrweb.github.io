@@ -64,7 +64,7 @@
             background: #2a5298;
             color: white;
             padding: 15px;
-            border-radius: 50%;
+            border-radius: 10px;
             font-size: 24px;
             font-weight: bold;
             cursor: pointer;
@@ -78,7 +78,7 @@
         .color-buttons button {
             width: 30px;
             height: 30px;
-            border-radius: 50%;
+            border-radius: 10px;
             border: none;
         }
         .delete-mode .button-list button + .delete-btn {
@@ -99,7 +99,9 @@
 <body>
     <div class="container">
         <div class="clock" id="clock">00:00:00</div>
-        <div class="button-list" id="buttonList"></div>
+        <div class="button-list" id="buttonList">
+            <button src="https://drive.google.com/">Google Drive</button>
+        </div>
         <div class="color-buttons" id="colorButtons"></div>
     </div>
     <div class="add-remove-container">
