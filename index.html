@@ -7,166 +7,180 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #1e3c72, #2a5298);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
+            text-align: center;
+            background-color: white;
             margin: 0;
-            color: white;
-            transition: background 0.5s;
-        }
-        .container {
+            padding: 0;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 20px;
-            width: 80%;
-            max-width: 600px;
-            padding: 20px;
-            background: rgba(255, 255, 255, 0.1);
-            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            height: 100vh;
+        }
+        #clock {
+            font-size: 48px;
+            margin: 20px;
+            padding: 10px;
+            background: #f0f0f0;
             border-radius: 10px;
-            backdrop-filter: blur(10px);
         }
-        .clock {
-            font-size: 2em;
-            font-weight: bold;
-        }
-        .button-list {
+        #buttons-container {
             display: flex;
             flex-wrap: wrap;
-            gap: 10px;
             justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
         }
-        .button-list button, .color-buttons button {
+        .button {
             padding: 10px 20px;
             border: none;
-            background: #2a5298;
-            color: white;
-            border-radius: 5px;
+            border-radius: 8px;
             cursor: pointer;
-            transition: 0.3s;
+            font-size: 16px;
+            background-color: #ddd;
         }
-        .button-list button:hover, .color-buttons button:hover {
-            background: #1e3c72;
-        }
-        .add-remove-container {
+        #controls {
             position: fixed;
-            bottom: 20px;
+            bottom: 70px;
             right: 20px;
             display: flex;
             flex-direction: column;
             gap: 10px;
         }
-        .add-button, .remove-button {
-            background: #2a5298;
-            color: white;
-            padding: 15px;
+        .control-btn {
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
+            border: none;
             font-size: 24px;
-            font-weight: bold;
             cursor: pointer;
-            border: none;
         }
-        .color-buttons {
+        #color-buttons {
             display: flex;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
             gap: 5px;
-            margin-top: 20px;
+            padding: 10px;
+            justify-content: center;
+            background: #ccc;
         }
-        .color-buttons button {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
+        .color-btn {
+            flex-grow: 1;
+            height: 40px;
             border: none;
+            border-radius: 20px;
+            cursor: pointer;
         }
-        .delete-mode .button-list button + .delete-btn {
-            display: inline;
-        }
-        .delete-btn {
-            display: none;
-            background: red;
-            color: white;
+        #student-mode {
+            position: fixed;
+            top: 10px;
+            right: 20px;
+            padding: 10px 15px;
+            border-radius: 8px;
             border: none;
             cursor: pointer;
-            margin-left: 5px;
-            padding: 5px;
-            border-radius: 5px;
+            background-color: #4CAF50;
+            color: white;
+        }
+        #grades-container {
+            display: none;
+            margin-top: 20px;
+            padding: 10px;
+            background: #f0f0f0;
+            border-radius: 10px;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="clock" id="clock">00:00:00</div>
-        <div class="button-list" id="buttonList"></div>
-        <div class="color-buttons" id="colorButtons"></div>
+    <button id="student-mode">Student Mode</button>
+    <div id="clock"></div>
+    <div id="buttons-container"></div>
+    <div id="grades-container"></div>
+    <div id="controls">
+        <button id="remove-button" class="control-btn">-</button>
+        <button id="add-button" class="control-btn">+</button>
     </div>
-    <div class="add-remove-container">
-        <button class="remove-button" onclick="toggleDeleteMode()">-</button>
-        <button class="add-button" onclick="openSettings()">+</button>
-    </div>
+    <div id="color-buttons"></div>
     <script>
         function updateClock() {
             const now = new Date();
             document.getElementById("clock").innerText = now.toLocaleTimeString();
         }
         setInterval(updateClock, 1000);
-
-        function saveData() {
-            localStorage.setItem("buttons", document.getElementById("buttonList").innerHTML);
-            localStorage.setItem("bgColor", document.body.style.background);
-        }
-
-        function loadData() {
-            document.getElementById("buttonList").innerHTML = localStorage.getItem("buttons") || "";
-            document.body.style.background = localStorage.getItem("bgColor") || "linear-gradient(135deg, #1e3c72, #2a5298)";
-        }
+        updateClock();
         
-        function openSettings() {
-            let newButton = prompt("Enter the name of the new button:");
-            let newLink = prompt("Enter the full URL (including https://):");
-            if (newButton && newLink) {
-                let btn = document.createElement("button");
-                btn.innerText = newButton;
-                btn.onclick = function() { window.location.href = newLink; };
-                document.getElementById("buttonList").appendChild(btn);
-                saveData();
-            }
+        const defaultButtons = [
+            { name: "Gmail", url: "https://mail.google.com" },
+            { name: "Google Drive", url: "https://drive.google.com" },
+            { name: "Google Translate", url: "https://translate.google.com" }
+        ];
+        
+        let buttons = JSON.parse(localStorage.getItem("buttons")) || defaultButtons;
+        let bgColor = localStorage.getItem("bgColor") || "white";
+        document.body.style.backgroundColor = bgColor;
+        
+        function saveButtons() {
+            localStorage.setItem("buttons", JSON.stringify(buttons));
         }
-
-        function toggleDeleteMode() {
-            document.body.classList.toggle("delete-mode");
-            document.querySelectorAll(".button-list button").forEach(btn => {
-                let deleteBtn = document.createElement("button");
-                deleteBtn.innerText = "x";
-                deleteBtn.classList.add("delete-btn");
-                deleteBtn.onclick = function() {
-                    btn.remove();
-                    deleteBtn.remove();
-                    saveData();
-                };
-                if (!btn.nextSibling || !btn.nextSibling.classList.contains("delete-btn")) {
-                    btn.insertAdjacentElement("afterend", deleteBtn);
-                }
+        function renderButtons() {
+            const container = document.getElementById("buttons-container");
+            container.innerHTML = "";
+            buttons.forEach((btn, index) => {
+                const button = document.createElement("button");
+                button.className = "button";
+                button.innerText = btn.name;
+                button.onclick = () => window.location.href = btn.url;
+                container.appendChild(button);
             });
         }
-
-        function changeBackground(color) {
-            document.body.style.background = color;
-            saveData();
-        }
+        renderButtons();
         
-        const colors = ["#1e3c72", "#2a5298", "#ff5733", "#28a745", "#ffc107", "#6f42c1"];
-        const colorButtons = document.getElementById("colorButtons");
+        document.getElementById("add-button").onclick = function() {
+            const name = prompt("Enter button name:");
+            const url = prompt("Enter button URL:");
+            if (name && url) {
+                buttons.push({ name, url });
+                saveButtons();
+                renderButtons();
+            }
+        };
+        
+        document.getElementById("remove-button").onclick = function() {
+            buttons.pop();
+            saveButtons();
+            renderButtons();
+        };
+        
+        const colors = ["#ff9999", "#99ff99", "#9999ff", "#ffff99", "#ff99ff", "#99ffff", "#ffffff"];
+        const colorContainer = document.getElementById("color-buttons");
         colors.forEach(color => {
-            let btn = document.createElement("button");
-            btn.style.background = color;
-            btn.onclick = function() { changeBackground(color); };
-            colorButtons.appendChild(btn);
+            const colorButton = document.createElement("button");
+            colorButton.className = "color-btn";
+            colorButton.style.backgroundColor = color;
+            colorButton.onclick = function() {
+                document.body.style.backgroundColor = color;
+                localStorage.setItem("bgColor", color);
+            };
+            colorContainer.appendChild(colorButton);
         });
-
-        loadData();
+        
+        document.getElementById("student-mode").onclick = function() {
+            const gradesContainer = document.getElementById("grades-container");
+            if (gradesContainer.style.display === "none") {
+                gradesContainer.style.display = "block";
+                fetchGrades();
+            } else {
+                gradesContainer.style.display = "none";
+            }
+        };
+        
+        function fetchGrades() {
+            document.getElementById("grades-container").innerText = "Fetching grades...";
+            // Simulated fetching from Canvas Student API (replace with actual API logic)
+            setTimeout(() => {
+                document.getElementById("grades-container").innerText = "Math: A | Science: B+ | History: A-";
+            }, 2000);
+        }
     </script>
 </body>
 </html>
