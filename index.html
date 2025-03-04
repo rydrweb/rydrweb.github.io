@@ -3,17 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RydrWeb</title>
+    <title>rydrweb</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             height: 100vh;
             margin: 0;
+            color: white;
         }
         .container {
             display: flex;
@@ -23,9 +24,10 @@
             width: 80%;
             max-width: 600px;
             padding: 20px;
-            background: white;
-            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
             border-radius: 10px;
+            backdrop-filter: blur(10px);
         }
         .clock {
             font-size: 2em;
@@ -49,15 +51,18 @@
         .button-list button:hover {
             background: #0056b3;
         }
-        .settings {
+        .add-button {
             position: fixed;
             bottom: 20px;
             right: 20px;
-            background: #333;
+            background: #28a745;
             color: white;
-            padding: 10px;
+            padding: 15px;
             border-radius: 50%;
+            font-size: 24px;
+            font-weight: bold;
             cursor: pointer;
+            border: none;
         }
     </style>
 </head>
@@ -70,7 +75,7 @@
             <button onclick="location.href='https://stackoverflow.com'">Stack Overflow</button>
         </div>
     </div>
-    <div class="settings" onclick="openSettings()">⚙</div>
+    <button class="add-button" onclick="openSettings()">+</button>
     <script>
         function updateClock() {
             const now = new Date();
@@ -79,14 +84,15 @@
         setInterval(updateClock, 1000);
         function openSettings() {
             let newButton = prompt("Enter the name of the new button:");
-            let newLink = prompt("Enter the URL:");
+            let newLink = prompt("Enter the full URL (including https://):");
             if (newButton && newLink) {
                 let btn = document.createElement("button");
                 btn.innerText = newButton;
-                btn.onclick = function() { location.href = newLink; };
+                btn.onclick = function() { window.location.href = newLink; };
                 document.getElementById("buttonList").appendChild(btn);
             }
         }
     </script>
 </body>
 </html>
+
