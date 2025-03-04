@@ -8,179 +8,159 @@
         body {
             font-family: Arial, sans-serif;
             text-align: center;
-            background-color: white;
+            background-color: #f0f0f0;
             margin: 0;
             padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            height: 100vh;
+            transition: background-color 0.3s;
         }
         #clock {
-            font-size: 48px;
-            margin: 20px;
+            font-size: 2em;
+            margin: 20px 0;
             padding: 10px;
-            background: #f0f0f0;
-            border-radius: 10px;
+            background-color: #444;
+            color: white;
+            display: inline-block;
+            border-radius: 8px;
         }
-        #buttons-container {
+        .buttons-container {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 10px;
             margin-top: 20px;
         }
         .button {
+            margin: 5px;
             padding: 10px 20px;
+            background-color: #555;
+            color: white;
             border: none;
-            border-radius: 8px;
+            border-radius: 5px;
             cursor: pointer;
-            font-size: 16px;
-            background-color: #ddd;
+            transition: background 0.3s;
         }
-        #controls {
+        .button:hover {
+            background-color: #777;
+        }
+        .control-buttons {
             position: fixed;
-            bottom: 70px;
-            right: 20px;
+            bottom: 60px;
+            right: 10px;
             display: flex;
             flex-direction: column;
             gap: 10px;
         }
-        .control-btn {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
+        .control-button {
+            padding: 10px;
+            font-size: 18px;
+            background-color: #444;
+            color: white;
             border: none;
-            font-size: 24px;
+            border-radius: 50%;
             cursor: pointer;
+            transition: background 0.3s;
         }
-        #color-buttons {
-            display: flex;
+        .control-button:hover {
+            background-color: #666;
+        }
+        .color-bar {
             position: fixed;
             bottom: 0;
+            left: 0;
             width: 100%;
-            gap: 5px;
+            display: flex;
+            justify-content: space-around;
             padding: 10px;
-            justify-content: center;
-            background: #ccc;
+            background: #333;
         }
-        .color-btn {
+        .color-button {
             flex-grow: 1;
-            height: 40px;
-            border: none;
-            border-radius: 20px;
+            height: 30px;
+            border-radius: 15px;
             cursor: pointer;
+            transition: opacity 0.3s;
         }
-        #student-mode {
-            position: fixed;
-            top: 10px;
-            right: 20px;
-            padding: 10px 15px;
-            border-radius: 8px;
-            border: none;
-            cursor: pointer;
-            background-color: #4CAF50;
-            color: white;
+        .color-button:hover {
+            opacity: 0.7;
         }
-        #grades-container {
+        .grades-dropdown {
             display: none;
-            margin-top: 20px;
+            background: white;
             padding: 10px;
-            background: #f0f0f0;
-            border-radius: 10px;
+            margin-top: 10px;
+            border-radius: 5px;
         }
     </style>
 </head>
 <body>
-    <button id="student-mode">Student Mode</button>
     <div id="clock"></div>
-    <div id="buttons-container"></div>
-    <div id="grades-container"></div>
-    <div id="controls">
-        <button id="remove-button" class="control-btn">-</button>
-        <button id="add-button" class="control-btn">+</button>
+    <div class="buttons-container" id="buttons-container"></div>
+    <div class="control-buttons">
+        <button class="control-button" id="minus-button">-</button>
+        <button class="control-button" id="add-button">+</button>
     </div>
-    <div id="color-buttons"></div>
+    <div class="color-bar" id="color-bar"></div>
+    <button class="button" id="student-mode">Student Mode</button>
+    <div class="grades-dropdown" id="grades-dropdown"></div>
     <script>
         function updateClock() {
-            const now = new Date();
-            document.getElementById("clock").innerText = now.toLocaleTimeString();
+            document.getElementById("clock").innerText = new Date().toLocaleTimeString();
         }
         setInterval(updateClock, 1000);
         updateClock();
-        
-        const defaultButtons = [
-            { name: "Gmail", url: "https://mail.google.com" },
-            { name: "Google Drive", url: "https://drive.google.com" },
-            { name: "Google Translate", url: "https://translate.google.com" }
+
+        const colors = ["red", "blue", "green", "yellow", "purple", "orange", "black", "white"];
+        const colorBar = document.getElementById("color-bar");
+        colors.forEach(color => {
+            let colorBtn = document.createElement("div");
+            colorBtn.className = "color-button";
+            colorBtn.style.backgroundColor = color;
+            colorBtn.onclick = () => {
+                document.body.style.backgroundColor = color;
+                localStorage.setItem("background", color);
+            };
+            colorBar.appendChild(colorBtn);
+        });
+        document.body.style.backgroundColor = localStorage.getItem("background") || "#f0f0f0";
+
+        const buttonsContainer = document.getElementById("buttons-container");
+        let savedButtons = JSON.parse(localStorage.getItem("buttons")) || [
+            { name: "Gmail", link: "https://mail.google.com" },
+            { name: "Google Drive", link: "https://drive.google.com" },
+            { name: "Google Translate", link: "https://translate.google.com" }
         ];
-        
-        let buttons = JSON.parse(localStorage.getItem("buttons")) || defaultButtons;
-        let bgColor = localStorage.getItem("bgColor") || "white";
-        document.body.style.backgroundColor = bgColor;
-        
-        function saveButtons() {
-            localStorage.setItem("buttons", JSON.stringify(buttons));
-        }
         function renderButtons() {
-            const container = document.getElementById("buttons-container");
-            container.innerHTML = "";
-            buttons.forEach((btn, index) => {
-                const button = document.createElement("button");
-                button.className = "button";
-                button.innerText = btn.name;
-                button.onclick = () => window.location.href = btn.url;
-                container.appendChild(button);
+            buttonsContainer.innerHTML = "";
+            savedButtons.forEach((button, index) => {
+                let btn = document.createElement("button");
+                btn.className = "button";
+                btn.innerText = button.name;
+                btn.onclick = () => window.location.href = button.link;
+                buttonsContainer.appendChild(btn);
             });
+            localStorage.setItem("buttons", JSON.stringify(savedButtons));
         }
         renderButtons();
-        
-        document.getElementById("add-button").onclick = function() {
-            const name = prompt("Enter button name:");
-            const url = prompt("Enter button URL:");
-            if (name && url) {
-                buttons.push({ name, url });
-                saveButtons();
+
+        document.getElementById("add-button").onclick = () => {
+            let name = prompt("Enter button name:");
+            let link = prompt("Enter button URL:");
+            if (name && link) {
+                savedButtons.push({ name, link });
                 renderButtons();
             }
         };
-        
-        document.getElementById("remove-button").onclick = function() {
-            buttons.pop();
-            saveButtons();
+        document.getElementById("minus-button").onclick = () => {
+            let name = prompt("Enter button name to remove:");
+            savedButtons = savedButtons.filter(button => button.name !== name);
             renderButtons();
         };
-        
-        const colors = ["#ff9999", "#99ff99", "#9999ff", "#ffff99", "#ff99ff", "#99ffff", "#ffffff"];
-        const colorContainer = document.getElementById("color-buttons");
-        colors.forEach(color => {
-            const colorButton = document.createElement("button");
-            colorButton.className = "color-btn";
-            colorButton.style.backgroundColor = color;
-            colorButton.onclick = function() {
-                document.body.style.backgroundColor = color;
-                localStorage.setItem("bgColor", color);
-            };
-            colorContainer.appendChild(colorButton);
-        });
-        
-        document.getElementById("student-mode").onclick = function() {
-            const gradesContainer = document.getElementById("grades-container");
-            if (gradesContainer.style.display === "none") {
-                gradesContainer.style.display = "block";
-                fetchGrades();
-            } else {
-                gradesContainer.style.display = "none";
-            }
+
+        document.getElementById("student-mode").onclick = () => {
+            let gradesDropdown = document.getElementById("grades-dropdown");
+            gradesDropdown.style.display = gradesDropdown.style.display === "none" ? "block" : "none";
+            // Fetch grades from Canvas API here (Placeholder)
+            gradesDropdown.innerHTML = "<p>Loading grades...</p>";
         };
-        
-        function fetchGrades() {
-            document.getElementById("grades-container").innerText = "Fetching grades...";
-            // Simulated fetching from Canvas Student API (replace with actual API logic)
-            setTimeout(() => {
-                document.getElementById("grades-container").innerText = "Math: A | Science: B+ | History: A-";
-            }, 2000);
-        }
     </script>
 </body>
 </html>
