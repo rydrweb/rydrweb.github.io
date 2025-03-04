@@ -8,61 +8,44 @@
         body {
             font-family: Arial, sans-serif;
             text-align: center;
-            background-color: #f0f0f0;
             margin: 0;
             padding: 0;
-            transition: background-color 0.3s;
+            background-color: #f4f4f4;
         }
         #clock {
             font-size: 2em;
-            margin: 20px 0;
-            padding: 10px;
-            background-color: #444;
-            color: white;
-            display: inline-block;
-            border-radius: 8px;
+            margin: 20px;
         }
-        .buttons-container {
+        .button-container {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            margin-top: 20px;
+            gap: 10px;
+            margin: 20px;
         }
-        .button {
-            margin: 5px;
+        .button-container button {
             padding: 10px 20px;
-            background-color: #555;
-            color: white;
             border: none;
-            border-radius: 5px;
             cursor: pointer;
-            transition: background 0.3s;
-        }
-        .button:hover {
-            background-color: #777;
+            border-radius: 5px;
+            font-size: 1em;
         }
         .control-buttons {
             position: fixed;
-            bottom: 60px;
-            right: 10px;
+            bottom: 100px;
+            right: 20px;
             display: flex;
             flex-direction: column;
             gap: 10px;
         }
-        .control-button {
+        .control-buttons button {
             padding: 10px;
-            font-size: 18px;
-            background-color: #444;
-            color: white;
+            font-size: 1.5em;
             border: none;
-            border-radius: 50%;
             cursor: pointer;
-            transition: background 0.3s;
+            border-radius: 50%;
         }
-        .control-button:hover {
-            background-color: #666;
-        }
-        .color-bar {
+        .color-buttons {
             position: fixed;
             bottom: 0;
             left: 0;
@@ -70,97 +53,88 @@
             display: flex;
             justify-content: space-around;
             padding: 10px;
-            background: #333;
         }
-        .color-button {
+        .color-buttons button {
             flex-grow: 1;
-            height: 30px;
-            border-radius: 15px;
+            height: 40px;
+            border: none;
             cursor: pointer;
-            transition: opacity 0.3s;
-        }
-        .color-button:hover {
-            opacity: 0.7;
-        }
-        .grades-dropdown {
-            display: none;
-            background: white;
-            padding: 10px;
-            margin-top: 10px;
-            border-radius: 5px;
+            border-radius: 20px;
+            margin: 0 5px;
         }
     </style>
 </head>
 <body>
     <div id="clock"></div>
-    <div class="buttons-container" id="buttons-container"></div>
+    <div class="button-container" id="buttonContainer"></div>
     <div class="control-buttons">
-        <button class="control-button" id="minus-button">-</button>
-        <button class="control-button" id="add-button">+</button>
+        <button id="removeButton">-</button>
+        <button id="addButton">+</button>
     </div>
-    <div class="color-bar" id="color-bar"></div>
-    <button class="button" id="student-mode">Student Mode</button>
-    <div class="grades-dropdown" id="grades-dropdown"></div>
+    <div class="color-buttons" id="colorButtons"></div>
     <script>
         function updateClock() {
-            document.getElementById("clock").innerText = new Date().toLocaleTimeString();
+            const now = new Date();
+            document.getElementById('clock').textContent = now.toLocaleTimeString();
         }
         setInterval(updateClock, 1000);
         updateClock();
 
-        const colors = ["red", "blue", "green", "yellow", "purple", "orange", "black", "white"];
-        const colorBar = document.getElementById("color-bar");
-        colors.forEach(color => {
-            let colorBtn = document.createElement("div");
-            colorBtn.className = "color-button";
-            colorBtn.style.backgroundColor = color;
-            colorBtn.onclick = () => {
-                document.body.style.backgroundColor = color;
-                localStorage.setItem("background", color);
-            };
-            colorBar.appendChild(colorBtn);
-        });
-        document.body.style.backgroundColor = localStorage.getItem("background") || "#f0f0f0";
-
-        const buttonsContainer = document.getElementById("buttons-container");
-        let savedButtons = JSON.parse(localStorage.getItem("buttons")) || [
-            { name: "Gmail", link: "https://mail.google.com" },
-            { name: "Google Drive", link: "https://drive.google.com" },
-            { name: "Google Translate", link: "https://translate.google.com" }
+        const buttonContainer = document.getElementById('buttonContainer');
+        const colorButtons = document.getElementById('colorButtons');
+        const addButton = document.getElementById('addButton');
+        const removeButton = document.getElementById('removeButton');
+        let buttons = JSON.parse(localStorage.getItem('buttons')) || [
+            { name: 'Gmail', link: 'https://mail.google.com' },
+            { name: 'Google Drive', link: 'https://drive.google.com' },
+            { name: 'Google Translate', link: 'https://translate.google.com' }
         ];
+        let bgColor = localStorage.getItem('bgColor') || '#f4f4f4';
+        document.body.style.backgroundColor = bgColor;
         function renderButtons() {
-            buttonsContainer.innerHTML = "";
-            savedButtons.forEach((button, index) => {
-                let btn = document.createElement("button");
-                btn.className = "button";
-                btn.innerText = button.name;
-                btn.onclick = () => window.location.href = button.link;
-                buttonsContainer.appendChild(btn);
+            buttonContainer.innerHTML = '';
+            buttons.forEach((btn, index) => {
+                const button = document.createElement('button');
+                button.textContent = btn.name;
+                button.onclick = () => window.location.href = btn.link;
+                buttonContainer.appendChild(button);
+                if (removeButton.dataset.active === 'true') {
+                    const minus = document.createElement('span');
+                    minus.textContent = ' ❌';
+                    minus.style.cursor = 'pointer';
+                    minus.onclick = () => {
+                        buttons.splice(index, 1);
+                        localStorage.setItem('buttons', JSON.stringify(buttons));
+                        renderButtons();
+                    };
+                    button.appendChild(minus);
+                }
             });
-            localStorage.setItem("buttons", JSON.stringify(savedButtons));
         }
         renderButtons();
-
-        document.getElementById("add-button").onclick = () => {
-            let name = prompt("Enter button name:");
-            let link = prompt("Enter button URL:");
+        addButton.onclick = () => {
+            const name = prompt('Enter button name:');
+            const link = prompt('Enter button URL:');
             if (name && link) {
-                savedButtons.push({ name, link });
+                buttons.push({ name, link });
+                localStorage.setItem('buttons', JSON.stringify(buttons));
                 renderButtons();
             }
         };
-        document.getElementById("minus-button").onclick = () => {
-            let name = prompt("Enter button name to remove:");
-            savedButtons = savedButtons.filter(button => button.name !== name);
+        removeButton.onclick = () => {
+            removeButton.dataset.active = removeButton.dataset.active === 'true' ? 'false' : 'true';
             renderButtons();
         };
-
-        document.getElementById("student-mode").onclick = () => {
-            let gradesDropdown = document.getElementById("grades-dropdown");
-            gradesDropdown.style.display = gradesDropdown.style.display === "none" ? "block" : "none";
-            // Fetch grades from Canvas API here (Placeholder)
-            gradesDropdown.innerHTML = "<p>Loading grades...</p>";
-        };
+        const colors = ['#f4f4f4', '#ff9999', '#99ff99', '#9999ff', '#ffff99', '#ff99ff', '#99ffff'];
+        colors.forEach(color => {
+            const colorBtn = document.createElement('button');
+            colorBtn.style.backgroundColor = color;
+            colorBtn.onclick = () => {
+                document.body.style.backgroundColor = color;
+                localStorage.setItem('bgColor', color);
+            };
+            colorButtons.appendChild(colorBtn);
+        });
     </script>
 </body>
 </html>
