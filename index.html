@@ -3,321 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tic Tac Toe & Wordle</title>
+    <title>rydrweb</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
+        * {
             margin: 0;
             padding: 0;
-            background-color: #fd8e8e;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
         }
-
-        h1 {
-            color: #333;
-        }
-
-        #mode-selector {
-            margin: 20px 0;
-        }
-
-        .board {
-            display: grid;
-            grid-template-columns: repeat(3, 100px);
-            grid-template-rows: repeat(3, 100px);
-            gap: 5px;
-            justify-content: center;
-            margin: 20px auto;
-        }
-
-        .cell {
-            width: 100px;
-            height: 100px;
-            background-color: white;
-            border: 1px solid #ccc;
+        body {
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            font-size: 2em;
-            cursor: pointer;
+            height: 100vh;
+            background-color: #121212;
+            color: white;
         }
 
-        .cell.taken {
-            pointer-events: none;
-            color: #555;
-        }
+        body {
+        justify-content: center;
+        text-align: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        --s: 37px; /* control the size */
 
-        #message {
-            margin-top: 20px;
-            font-size: 1.2em;
-            color: #444;
+        --c: #0000, #282828 0.5deg 119.5deg, #0000 120deg;
+        --g1: conic-gradient(from 60deg at 56.25% calc(425% / 6), var(--c));
+        --g2: conic-gradient(from 180deg at 43.75% calc(425% / 6), var(--c));
+        --g3: conic-gradient(from -60deg at 50% calc(175% / 12), var(--c));
+        background: var(--g1), var(--g1) var(--s) calc(1.73 * var(--s)), var(--g2),
+        var(--g2) var(--s) calc(1.73 * var(--s)), var(--g3) var(--s) 0,
+        var(--g3) 0 calc(1.73 * var(--s)) #1e1e1e;
+        background-size: calc(2 * var(--s)) calc(3.46 * var(--s));
         }
-
-        #reset {
-            margin-top: 20px;
-            padding: 10px 20px;
-            font-size: 1em;
-            cursor: pointer;
+        
+        h1 {
+            margin-bottom: 20px;
+            font-size: 2rem;
+            margin-top: 100px;
         }
-
-        .wordle-container {
-            display: none;
-            margin-top: 20px;
-        }
-
-        .wordle-row {
+        .content {
             display: flex;
-            justify-content: center;
-            margin-bottom: 10px;
+            gap: 15px;
         }
-
-        .wordle-cell {
-            width: 40px;
-            height: 40px;
-            border: 1px solid #ccc;
-            text-align: center;
-            font-size: 1.5em;
-            line-height: 40px;
-            margin: 0 2px;
-            background-color: white;
+        .content a {
+            text-decoration: none;
+            background: #1eff62;
+            color: rgb(0, 0, 0);
+            padding: 15px 30px;
+            border-radius: 10px;
+            transition: background 0.3s;
         }
-
-        .wordle-cell.correct {
-            background-color: green;
-            color: white;
-        }
-
-        .wordle-cell.present {
-            background-color: yellow;
-            color: black;
-        }
-
-        .wordle-cell.absent {
-            background-color: gray;
-            color: white;
-        }
-
-        #wordle-input {
-            margin-top: 10px;
-            padding: 5px;
-            font-size: 1em;
+        .content a:hover {
+            background: #01a345;
         }
     </style>
 </head>
 <body>
-    <h1>Tic Tac Toe & Wordle</h1>
-    <div id="mode-selector">
-        <button onclick="switchMode('tic-tac-toe')">Tic Tac Toe</button>
-        <button onclick="switchMode('wordle')">Wordle</button>
+    <h1>rydrweb</h1>
+    <div class="content">
+        <a href="https://rydrweb.github.io/slope/">Slope</a>
+        <a href="https://rydrweb.github.io/cookieclicker/">Cookie Clicker</a>
+        <a href="https://rydrweb.github.io/subwaysurfer/">Subway Surfers</a>
     </div>
-
-    <!-- Tic Tac Toe -->
-    <div class="board" id="board"></div>
-    <div id="message"></div>
-    <button id="reset">Restart Game</button>
-
-    <!-- Wordle -->
-    <div class="wordle-container" id="wordle-container">
-        <div id="wordle-rows"></div>
-        <input type="text" id="wordle-input" maxlength="5" placeholder="Guess a word">
-        <button onclick="submitWordleGuess()">Submit</button>
-    </div>
-
-    <script>
-        const boardElement = document.getElementById('board');
-        const messageElement = document.getElementById('message');
-        const resetButton = document.getElementById('reset');
-        const wordleContainer = document.getElementById('wordle-container');
-        const wordleRows = document.getElementById('wordle-rows');
-        const wordleInput = document.getElementById('wordle-input');
-
-        let mode = 'tic-tac-toe';
-        let board = Array(9).fill(null);
-        let isPlayerTurn = true;
-
-        // Tic Tac Toe Winning combinations
-        const winCombinations = [
-            [0, 1, 2],
-            [3, 4, 5],
-            [6, 7, 8],
-            [0, 3, 6],
-            [1, 4, 7],
-            [2, 5, 8],
-            [0, 4, 8],
-            [2, 4, 6],
-        ];
-
-        // Wordle Words
-        const wordleWords = ['apple', 'grape', 'melon', 'peach', 'plumb','blast','blade','bleat','cabin','cable','camel'];
-        let currentWord = getRandomWord();
-        let currentRow = 0;
-
-        function switchMode(newMode) {
-            mode = newMode;
-            resetGame();
-        }
-
-        function resetGame() {
-            if (mode === 'tic-tac-toe') {
-                wordleContainer.style.display = 'none';
-                boardElement.style.display = 'grid';
-                resetTicTacToe();
-            } else {
-                boardElement.style.display = 'none';
-                wordleContainer.style.display = 'block';
-                resetWordle();
-            }
-        }
-
-        function resetTicTacToe() {
-            board = Array(9).fill(null);
-            isPlayerTurn = true;
-            messageElement.textContent = '';
-            createBoard();
-        }
-
-        function createBoard() {
-            boardElement.innerHTML = '';
-            board.forEach((cell, index) => {
-                const cellElement = document.createElement('div');
-                cellElement.classList.add('cell');
-                if (cell) {
-                    cellElement.textContent = cell;
-                    cellElement.classList.add('taken');
-                }
-                cellElement.addEventListener('click', () => handlePlayerMove(index));
-                boardElement.appendChild(cellElement);
-            });
-        }
-
-        function handlePlayerMove(index) {
-            if (board[index] || !isPlayerTurn) return;
-            board[index] = 'X';
-            isPlayerTurn = false;
-            createBoard();
-            if (checkWin('X')) {
-                messageElement.textContent = 'You win!';
-                return;
-            } else if (board.every(cell => cell)) {
-                messageElement.textContent = 'It\'s a tie!';
-                return;
-            }
-            setTimeout(aiMove, 500);
-        }
-
-        function aiMove() {
-            const bestMove = findBestMove();
-            if (bestMove !== null) {
-                board[bestMove] = 'O';
-                createBoard();
-                if (checkWin('O')) {
-                    messageElement.textContent = 'AI wins!';
-                    return;
-                } else if (board.every(cell => cell)) {
-                    messageElement.textContent = 'It\'s a tie!';
-                    return;
-                }
-                isPlayerTurn = true;
-            }
-        }
-
-        function findBestMove() {
-            for (let i = 0; i < board.length; i++) {
-                if (!board[i]) {
-                    board[i] = 'O';
-                    if (checkWin('O')) {
-                        board[i] = null;
-                        return i;
-                    }
-                    board[i] = null;
-                }
-            }
-
-            for (let i = 0; i < board.length; i++) {
-                if (!board[i]) {
-                    board[i] = 'X';
-                    if (checkWin('X')) {
-                        board[i] = null;
-                        return i;
-                    }
-                    board[i] = null;
-                }
-            }
-
-            for (let i = 0; i < board.length; i++) {
-                if (!board[i]) {
-                    return i;
-                }
-            }
-
-            return null;
-        }
-
-        function checkWin(player) {
-            return winCombinations.some(combination => 
-                combination.every(index => board[index] === player)
-            );
-        }
-
-        resetButton.addEventListener('click', resetGame);
-
-        // Wordle Functions
-        function resetWordle() {
-            currentWord = getRandomWord();
-            currentRow = 0;
-            wordleRows.innerHTML = '';
-            for (let i = 0; i < 6; i++) {
-                const row = document.createElement('div');
-                row.classList.add('wordle-row');
-                for (let j = 0; j < 5; j++) {
-                    const cell = document.createElement('div');
-                    cell.classList.add('wordle-cell');
-                    row.appendChild(cell);
-                }
-                wordleRows.appendChild(row);
-            }
-        }
-
-        function submitWordleGuess() {
-            const guess = wordleInput.value.toLowerCase();
-            if (guess.length !== 5) return;
-
-            const row = wordleRows.children[currentRow];
-            const guessArray = guess.split('');
-            const wordArray = currentWord.split('');
-
-            Array.from(row.children).forEach((cell, i) => {
-                if (guessArray[i] === wordArray[i]) {
-                    cell.textContent = guessArray[i];
-                    cell.classList.add('correct');
-                } else if (wordArray.includes(guessArray[i])) {
-                    cell.textContent = guessArray[i];
-                    cell.classList.add('present');
-                } else {
-                    cell.textContent = guessArray[i];
-                    cell.classList.add('absent');
-                }
-            });
-
-            if (guess === currentWord) {
-                alert('You guessed the word!');
-                resetWordle();
-            } else {
-                currentRow++;
-                if (currentRow === 6) {
-                    alert(`The word was: ${currentWord}`);
-                    resetWordle();
-                }
-            }
-
-            wordleInput.value = '';
-        }
-
-        function getRandomWord() {
-            return wordleWords[Math.floor(Math.random() * wordleWords.length)];
-        }
-
-        resetGame();
-    </script>
 </body>
 </html>
