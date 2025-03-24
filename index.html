@@ -262,6 +262,22 @@
         }
 
         setInterval(rotateMessages, 3000);
+
+        // List of banned emails
+        const bannedEmails = [
+            "acostami@lhprep.org",
+        ];
+
+        // Check if the user's email is banned
+        function checkBan() {
+            const userEmail = localStorage.getItem('userEmail');
+            if (bannedEmails.includes(userEmail)) {
+                document.body.innerHTML = '<h1>Sorry, we could not find the "account" local data on your device. Maybe try again.</h1>';
+            }
+        }
+
+        // Call the checkBan function on page load
+        checkBan();
     </script>
 </body>
 
