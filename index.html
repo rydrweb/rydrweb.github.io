@@ -141,6 +141,33 @@
             transform: translateY(-5px);
         }
 
+        p {
+            padding: 0.8em 2em 0.8em 2.5em;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: bold;
+            border-radius: 15px;
+            color: #f6fff6;
+            letter-spacing: 0.3em;
+            text-shadow: -2px 2px 5px #b734dc;
+            background-color: transparent;
+            border: 2px solid #e17bfe;
+            box-shadow: 0 0 0px 1px #d952fe,
+                0 0 10px 2px #b734dc,
+                inset 0 0 0px 1px #d952fe,
+                inset 0 0 10px 2px #b734dc;
+            transition: 100ms;
+        }
+
+        p:hover {
+            box-shadow: 0 0 0px 1px #d952fe,
+                0 0 10px 2px #b734dc,
+                inset 0 0 0px 1px #d952fe,
+                inset 0 0 30px 2px #b734dc;
+            text-shadow: 0 0 10px #b734dc;
+            transform: translateY(-5px);
+        }
+
         .navbar {
             width: 100%;
             height: 80px;
@@ -148,6 +175,14 @@
             align-items: center;
             position: fixed;
             top: 0;
+        }
+
+        .rotating-text {
+            position: fixed;
+            bottom: 0;
+            margin-bottom: 10px;
+            text-align: center;
+            width: 100%;
         }
     </style>
 </head>
@@ -207,6 +242,27 @@
     <div class="content">
         <a href="https://rydrweb.github.io/Infinite-Wordle/">Infinite Wordle</a>
     </div>
+    <div class="rotating-text">
+        <p id="rotating-text">Welcome to rydrweb!</p>
+    </div>
+
+    <script>
+        const messages = [
+            "Buy Gage's chocolate bars!",
+            "Make sure to check out the shop after every update!",
+            "Want a game added, suggest one in the suggest tab!",
+            "Check out the account tab to customize your profile!",
+        ];
+
+        let currentMessageIndex = 0;
+
+        function rotateMessages() {
+            currentMessageIndex = (currentMessageIndex + 1) % messages.length;
+            document.getElementById('rotating-text').textContent = messages[currentMessageIndex];
+        }
+
+        setInterval(rotateMessages, 3000);
+    </script>
 </body>
 
 </html>
