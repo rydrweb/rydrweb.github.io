@@ -262,30 +262,6 @@
         }
 
         setInterval(rotateMessages, 3000);
-
-        const bannedEmails = [
-    "rapoportmi@lhprep.org",
-];
-
-function checkBan() {
-    const userEmail = localStorage.getItem('userEmail')?.trim();
-    console.log('Stored userEmail:', userEmail); // Debugging output
-
-    if (!userEmail) {
-        console.warn("No user email found in localStorage.");
-        return; // Exit if no email is stored
-    }
-
-    if (bannedEmails.includes(userEmail)) {
-        document.body.innerHTML = '<h1>Sorry, we could not find the "account" local data on your device. Maybe try again.</h1>';
-    }
-}
-
-// Ensure userEmail is stored (for testing)
-localStorage.setItem('userEmail', 'rapoportmi@lhprep.org'); // Set a test email
-
-checkBan(); // Run the function
-
     </script>
 </body>
 
