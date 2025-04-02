@@ -185,6 +185,39 @@
             text-align: center;
             width: 100%;
         }
+
+        .search-bar {
+            margin: 10px 0;
+            width: 80%;
+            max-width: 400px;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 0.8em 2em;
+            font-size: 15px;
+            font-weight: bold;
+            border-radius: 15px;
+            color: #f6fff6;
+            letter-spacing: 0.3em;
+
+            background-color: transparent;
+            border: 2px solid #f4fb72;
+            box-shadow: 0 0 0px 1px #e6f112,
+                0 0 10px 2px #e8f326,
+                inset 0 0 0px 1px #e6f112,
+                inset 0 0 10px 2px #e8f326;
+            transition: 100ms;
+        }
+
+        .search-bar input:focus {
+            outline: none;
+            box-shadow: 0 0 0px 1px #e6f112,
+                0 0 10px 2px #e8f326,
+                inset 0 0 0px 1px #e6f112,
+                inset 0 0 30px 2px #e8f326;
+            transform: translateY(-5px);
+        }
     </style>
 </head>
 
@@ -198,6 +231,9 @@
         <a href="https://rydrweb.github.io/clock" style="margin-left: 10px;">Utility</a>
     </div>
     <h1>rydrweb v1.4</h1>
+    <div class="search-bar">
+        <input type="text" id="search-input" placeholder="Search games..." oninput="filterLinks()">
+    </div>
     <div class="content2">
         <a href="https://rydrweb.github.io/Sports">Sports</a>
         <a href="https://rydrweb.github.io/Racing">Racing</a>
@@ -266,6 +302,16 @@
         }
 
         setInterval(rotateMessages, 3000);
+
+        function filterLinks() {
+            const query = document.getElementById('search-input').value.toLowerCase();
+            const links = document.querySelectorAll('.content a, .content2 a');
+
+            links.forEach(link => {
+                const text = link.textContent.toLowerCase();
+                link.style.display = text.includes(query) ? '' : 'none';
+            });
+        }
     </script>
 </body>
 
